@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import type { Expense } from './types/expense'
 import { STORAGE_KEY } from './constants'
 import { filterExpenses } from './utils/filterExpenses'
@@ -20,11 +20,10 @@ function App() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses))
   }, [expenses])
 
-  // TODO: wrap in useMemo(() => filterExpenses(expenses, query), [expenses, query])
-  const filteredExpenses = filterExpenses(expenses, query)
+  // Flow và hiểu: Tránh chạy lại hàm filterExpenses (vốn có delay 150ms) và tính tổng tiền khi component re-render vì các state khác thay đổi mà query/expenses không đổi.
+  const filteredExpenses = useMemo(() => filterExpenses(expenses, query), [expenses, query])
 
-  // TODO: wrap in useMemo(() => filteredExpenses.reduce(...), [filteredExpenses])
-  const total = filteredExpenses.reduce((sum, e) => sum + e.amount, 0)
+  const total = useMemo(() => filteredExpenses.reduce((sum, e) => sum + e.amount, 0), [filteredExpenses])
 
   function handleAddExpense(expense: Omit<Expense, 'id'>) {
     setExpenses(prev => [
