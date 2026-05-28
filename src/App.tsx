@@ -1,5 +1,4 @@
-import { useState, useEffect } from 'react'
-// TODO: import useRef
+import { useState, useEffect, useRef } from 'react'
 import type { Expense } from './types/expense'
 import { STORAGE_KEY } from './constants'
 import { filterExpenses } from './utils/filterExpenses'
@@ -15,19 +14,38 @@ function App() {
   })
 
   const [query, setQuery] = useState('')
-  // TODO: add a state for the filtered results (starts with the full expenses list)
 
-  // TODO: create a useRef to hold the debounce timer ID
+  // Flow làm & Hiểu:
+  // 1. `filteredExpenses` state: Lưu trữ kết quả danh sách chi tiêu sau khi lọc, được khởi tạo ban đầu là toàn bộ `expenses`.
+  // 2. `debounceTimerRef` (useRef): Lưu giữ ID của timer (setTimeout) hiện tại. Dùng useRef giúp giữ giá trị của timer qua các lượt re-render mà không tự kích hoạt re-render.
+  // 3. `useEffect` lắng nghe `[query, expenses]`: Khi người dùng nhập ký tự hoặc danh sách chi tiêu thay đổi:
+  //    - Hủy (clearTimeout) timer cũ đang chờ (nếu có) để hủy bỏ các lần lọc chưa kịp chạy.
+  //    - Thiết lập một timer mới 300ms.
+  //    - Khi hết 300ms, gọi `filterExpenses` và cập nhật state `filteredExpenses`.
+  //    - Trả về một cleanup function để xóa sạch timer khi component unmount hoặc trước khi effect kế tiếp kích hoạt.
+  const [filteredExpenses, setFilteredExpenses] = useState<Expense[]>(expenses)
+  const debounceTimerRef = useRef<number | null>(null)
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(expenses))
   }, [expenses])
 
-  // TODO: replace this direct call with a debounced approach:
-  //       - use a useEffect with [query, expenses] deps
-  //       - clear the previous timer, set a new 300ms timer
-  //       - inside the timer, call filterExpenses and update the filtered results state
-  const filteredExpenses = filterExpenses(expenses, query)
+  useEffect(() => {
+    if (debounceTimerRef.current !== null) {
+      window.clearTimeout(debounceTimerRef.current)
+    }
+
+    debounceTimerRef.current = window.setTimeout(() => {
+      const results = filterExpenses(expenses, query)
+      setFilteredExpenses(results)
+    }, 300)
+
+    return () => {
+      if (debounceTimerRef.current !== null) {
+        window.clearTimeout(debounceTimerRef.current)
+      }
+    }
+  }, [query, expenses])
 
   function handleAddExpense(expense: Omit<Expense, 'id'>) {
     setExpenses(prev => [
