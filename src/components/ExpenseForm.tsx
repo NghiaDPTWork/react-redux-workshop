@@ -54,10 +54,7 @@ function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
       category,
       date: new Date().toISOString().split('T')[0],
     })
-    // TODO: dispatch({ type: 'RESET' })
-    setDescription('')
-    setAmount('')
-    setCategory('')
+    dispatch({ type: 'RESET' })
   }
 
   return (
@@ -67,8 +64,7 @@ function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
         Name
         <input
           value={description}
-          // TODO: onChange => dispatch({ type: 'SET_FIELD', field: 'description', value: e.target.value })
-          onChange={e => setDescription(e.target.value)}
+          onChange={e => dispatch({ type: 'SET_FIELD', field: 'description', value: e.target.value })}
           placeholder="e.g. Lunch"
           required
         />
@@ -77,8 +73,7 @@ function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
         Amount ($)
         <input
           value={amount}
-          // TODO: onChange => dispatch({ type: 'SET_FIELD', field: 'amount', value: e.target.value })
-          onChange={e => setAmount(e.target.value)}
+          onChange={e => dispatch({ type: 'SET_FIELD', field: 'amount', value: e.target.value })}
           type="number"
           placeholder="0.00"
           min={0}
@@ -88,8 +83,7 @@ function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
       </label>
       <label>
         Category
-        <select value={category} onChange={e => setCategory(e.target.value)} required>
-          {/* TODO: onChange => dispatch({ type: 'SET_FIELD', field: 'category', value: e.target.value }) */}
+        <select value={category} onChange={e => dispatch({ type: 'SET_FIELD', field: 'category', value: e.target.value })} required>
           <option value="">Select category</option>
           {CATEGORIES.map(c => (
             <option key={c} value={c}>{c}</option>
