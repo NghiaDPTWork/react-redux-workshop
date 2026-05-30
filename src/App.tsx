@@ -6,6 +6,7 @@ import ExpenseForm from './components/ExpenseForm'
 import ExpenseList from './components/ExpenseList'
 import SearchBar from './components/SearchBar'
 import AppHeader from './components/AppHeader'
+import { AppContext } from './context/AppContext'
 import './App.css'
 
 function App() {
@@ -45,30 +46,34 @@ function App() {
     ])
   }
 
-  // TODO: replace prop drilling with useContext
+  // CÁCH LÀM VÀ GIẢI THÍCH FLOW:
+  // Component App đóng vai trò là nhà cung cấp dữ liệu bằng cách sử dụng thẻ AppContext.Provider bọc lấy toàn bộ cấu trúc giao diện của ứng dụng.
+  // Các giá trị như tiền tệ giao diện sáng tối và tổng chi phí được truyền vào thuộc tính value của Provider để sẵn sàng chia sẻ cho các component con bên dưới.
   return (
-    <div className="app-layout" data-theme={theme}>
-      <aside>
-        <h1>Expense Manager</h1>
-        <AppHeader
-          currency={currency}
-          theme={theme}
-          onCurrencyChange={setCurrency}
-          onThemeChange={setTheme}
-        />
-        <ExpenseForm onAddExpense={handleAddExpense} />
-      </aside>
-      <main>
-        <SearchBar query={query} onQueryChange={setQuery} />
-        <ExpenseList
-          expenses={filteredExpenses}
-          onDeleteExpense={handleDeleteExpense}
-          currencySymbol={currencySymbol}
-          total={total}
-          theme={theme}
-        />
-      </main>
-    </div>
+    <AppContext.Provider value={{ currency, setCurrency, theme, setTheme, currencySymbol, total }}>
+      <div className="app-layout" data-theme={theme}>
+        <aside>
+          <h1>Expense Manager</h1>
+          <AppHeader
+            currency={currency}
+            theme={theme}
+            onCurrencyChange={setCurrency}
+            onThemeChange={setTheme}
+          />
+          <ExpenseForm onAddExpense={handleAddExpense} />
+        </aside>
+        <main>
+          <SearchBar query={query} onQueryChange={setQuery} />
+          <ExpenseList
+            expenses={filteredExpenses}
+            onDeleteExpense={handleDeleteExpense}
+            currencySymbol={currencySymbol}
+            total={total}
+            theme={theme}
+          />
+        </main>
+      </div>
+    </AppContext.Provider>
   )
 }
 
