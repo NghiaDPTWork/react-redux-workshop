@@ -54,12 +54,7 @@ function App() {
       <div className="app-layout" data-theme={theme}>
         <aside>
           <h1>Expense Manager</h1>
-          <AppHeader
-            currency={currency}
-            theme={theme}
-            onCurrencyChange={setCurrency}
-            onThemeChange={setTheme}
-          />
+          <AppHeader />
           <ExpenseForm onAddExpense={handleAddExpense} />
         </aside>
         <main>

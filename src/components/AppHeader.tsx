@@ -1,19 +1,22 @@
-interface AppHeaderProps {
-  currency: string
-  theme: string
-  onCurrencyChange: (currency: 'USD' | 'VND') => void
-  onThemeChange: (theme: 'light' | 'dark') => void
-}
+import { useContext } from 'react'
+import { AppContext } from '../context/AppContext'
 
-function AppHeader({ currency, theme, onCurrencyChange, onThemeChange }: AppHeaderProps) {
-  // TODO: consume from context instead of props
+// CÁCH LÀM VÀ GIẢI THÍCH FLOW:
+// Để loại bỏ việc nhận các tham số cấu hình giao diện từ bên ngoài ta chuyển sang dùng hook useContext để kết nối trực tiếp với AppContext.
+// Component lúc này sẽ tự động lấy về trạng thái currency và theme cùng các phương thức cập nhật tương ứng từ context chung.
+// Nhờ đó mã nguồn của AppHeader được tinh giản tối đa và tránh được sự phụ phục không cần thiết vào props của cha.
+function AppHeader() {
+  const context = useContext(AppContext)
+  if (!context) throw new Error('AppContext must be used within an AppProvider')
+  const { currency, setCurrency, theme, setTheme } = context
+
   return (
     <div className="app-header">
       <div className="app-header-row">
         <span className="app-header-label">Currency</span>
         <button
           className="app-header-btn"
-          onClick={() => onCurrencyChange(currency === 'USD' ? 'VND' : 'USD')}
+          onClick={() => setCurrency(currency === 'USD' ? 'VND' : 'USD')}
         >
           {currency === 'USD' ? '$ USD' : '₫ VND'}
         </button>
@@ -22,7 +25,7 @@ function AppHeader({ currency, theme, onCurrencyChange, onThemeChange }: AppHead
         <span className="app-header-label">Theme</span>
         <button
           className="app-header-btn"
-          onClick={() => onThemeChange(theme === 'light' ? 'dark' : 'light')}
+          onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
         >
           {theme === 'light' ? '\u2600 Light' : '\uD83C\uDF19 Dark'}
         </button>
