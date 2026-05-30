@@ -6,6 +6,18 @@ interface ExpenseFormProps {
   onAddExpense: (expense: Omit<Expense, 'id'>) => void
 }
 
+interface FormState {
+  description: string
+  amount: string
+  category: string
+}
+
+const initialFormState: FormState = {
+  description: '',
+  amount: '',
+  category: '',
+}
+
 function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
   // TODO: replace with useReducer(formReducer, initialFormState)
   const [description, setDescription] = useState('')
