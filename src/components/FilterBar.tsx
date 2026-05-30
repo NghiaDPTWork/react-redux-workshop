@@ -1,23 +1,23 @@
 import { CATEGORIES } from '../constants'
 
-// TODO: Import useDispatch and useSelector from react-redux
-// TODO: Import setFilter and clearFilters from '../store/filters/actions'
-// TODO: Import RootState from '../store'
+import { useDispatch, useSelector } from 'react-redux'
+import { setFilter, clearFilters } from '../store/filters/actions'
+import type { RootState } from '../store'
 
 function FilterBar() {
-  // TODO: Get dispatch from useDispatch()
-  // TODO: Get activeCategory from useSelector((state: RootState) => state.filters.category)
-
-  const activeCategory = null // placeholder — remove when wired
+  const dispatch = useDispatch()
+  const activeCategory = useSelector((state: RootState) => state.filters.category)
 
   function handleCategoryClick(category: string) {
-    // TODO: If category === activeCategory, dispatch clearFilters(); else dispatch setFilter(category)
-    console.log('Filter by:', category) // placeholder
+    if (category === activeCategory) {
+      dispatch(clearFilters())
+    } else {
+      dispatch(setFilter(category))
+    }
   }
 
   function handleClear() {
-    // TODO: dispatch clearFilters()
-    console.log('Clear filters') // placeholder
+    dispatch(clearFilters())
   }
 
   return (
