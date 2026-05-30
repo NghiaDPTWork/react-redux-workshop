@@ -36,9 +36,9 @@ function App() {
   // Điều này khiến prop onDeleteExpense truyền xuống ExpenseItem luôn bị coi là thay đổi làm mất hoàn toàn tác dụng tối ưu hiệu năng của React.memo.
   // Vì vậy việc bọc hàm này trong hook useCallback giúp giữ nguyên tham chiếu của hàm qua các lần render của component cha từ đó giúp tối ưu hóa hiệu năng render cho component con.
   // TODO: wrap handleDeleteExpense in useCallback to stabilize reference for ExpenseItem (React.memo)
-  function handleDeleteExpense(id: string) {
+  const handleDeleteExpense = useCallback((id: string) => {
     setExpenses(prev => prev.filter(e => e.id !== id))
-  }
+  }, [])
 
   function handleAddExpense(expense: Omit<Expense, 'id'>) {
     setExpenses(prev => [
