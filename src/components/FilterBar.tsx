@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import type { RootState } from '../store'
-import { setFilter, clearFilters } from '../store/filters/actions'
+import { setFilter, clearFilters } from '../store/slices/filtersSlice'
 import { CATEGORIES } from '../constants'
 
 function FilterBar() {
