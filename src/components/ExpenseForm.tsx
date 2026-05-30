@@ -18,6 +18,24 @@ const initialFormState: FormState = {
   category: '',
 }
 
+type FormAction =
+  | { type: 'SET_FIELD'; field: keyof FormState; value: string }
+  | { type: 'RESET' }
+
+function formReducer(state: FormState, action: FormAction): FormState {
+  switch (action.type) {
+    case 'SET_FIELD':
+      return {
+        ...state,
+        [action.field]: action.value,
+      }
+    case 'RESET':
+      return initialFormState
+    default:
+      return state
+  }
+}
+
 function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
   // TODO: replace with useReducer(formReducer, initialFormState)
   const [description, setDescription] = useState('')
