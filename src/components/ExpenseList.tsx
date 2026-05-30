@@ -14,7 +14,7 @@ interface ExpenseListProps {
 function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
   return (
     <div className="expense-list">
-      <ExpenseSummary total={0} currencySymbol="" />
+      <ExpenseSummary />
       <h2>Expenses</h2>
       {expenses.length === 0 ? (
         <p className="empty-state">No expenses yet.</p>
@@ -25,8 +25,6 @@ function ExpenseList({ expenses, onDeleteExpense }: ExpenseListProps) {
               key={expense.id}
               expense={expense}
               onDeleteExpense={onDeleteExpense}
-              currencySymbol=""
-              theme=""
             />
           ))}
         </ul>
