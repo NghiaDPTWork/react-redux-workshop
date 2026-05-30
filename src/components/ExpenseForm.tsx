@@ -36,6 +36,11 @@ function formReducer(state: FormState, action: FormAction): FormState {
   }
 }
 
+// CÁCH LÀM VÀ GIẢI THÍCH FLOW:
+// Để quản lý form có nhiều trường thông tin như mô tả số tiền và danh mục thay vì sử dụng nhiều useState độc lập gây rời rạc ta sử dụng useReducer để gộp tất cả thành một đối tượng duy nhất.
+// Đầu tiên ta định nghĩa cấu trúc FormState và các hành động FormAction có thể thay đổi trạng thái bao gồm việc cập nhật một trường dữ liệu hoặc reset lại toàn bộ form.
+// Hàm formReducer chịu trách nhiệm tính toán và trả về trạng thái form mới dựa trên hành động nhận được.
+// Khi sử dụng trong component useReducer sẽ trả về trạng thái hiện tại và hàm dispatch để gửi các hành động thay đổi giúp quản lý luồng dữ liệu của form một cách tập trung và nhất quán.
 function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
   // TODO: replace with useReducer(formReducer, initialFormState)
   const [description, setDescription] = useState('')
