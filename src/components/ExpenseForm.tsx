@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useReducer } from 'react'
 import { CATEGORIES } from '../constants'
 import type { Expense } from '../types/expense'
 
@@ -42,10 +42,8 @@ function formReducer(state: FormState, action: FormAction): FormState {
 // Hàm formReducer chịu trách nhiệm tính toán và trả về trạng thái form mới dựa trên hành động nhận được.
 // Khi sử dụng trong component useReducer sẽ trả về trạng thái hiện tại và hàm dispatch để gửi các hành động thay đổi giúp quản lý luồng dữ liệu của form một cách tập trung và nhất quán.
 function ExpenseForm({ onAddExpense }: ExpenseFormProps) {
-  // TODO: replace with useReducer(formReducer, initialFormState)
-  const [description, setDescription] = useState('')
-  const [amount, setAmount] = useState('')
-  const [category, setCategory] = useState('')
+  const [state, dispatch] = useReducer(formReducer, initialFormState)
+  const { description, amount, category } = state
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
