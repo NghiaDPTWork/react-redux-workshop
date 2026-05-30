@@ -10,9 +10,13 @@ interface ExpenseListProps {
 
 function ExpenseList({ query }: ExpenseListProps) {
   const expenses = useSelector((state: RootState) => state.expenses.items)
-  // TODO: Get activeCategory from state.filters.category
-  // TODO: Filter expenses by activeCategory before passing to useExpenseFilter
-  const { filteredExpenses, total } = useExpenseFilter(expenses, query)
+  const activeCategory = useSelector((state: RootState) => state.filters.category)
+  
+  const categoryFilteredExpenses = activeCategory
+    ? expenses.filter(e => e.category === activeCategory)
+    : expenses
+
+  const { filteredExpenses, total } = useExpenseFilter(categoryFilteredExpenses, query)
 
   return (
     <div className="expense-list">
