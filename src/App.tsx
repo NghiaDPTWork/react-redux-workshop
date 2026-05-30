@@ -62,9 +62,6 @@ function App() {
           <ExpenseList
             expenses={filteredExpenses}
             onDeleteExpense={handleDeleteExpense}
-            currencySymbol={currencySymbol}
-            total={total}
-            theme={theme}
           />
         </main>
       </div>
