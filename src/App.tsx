@@ -22,7 +22,7 @@ function App() {
 
   const filteredExpenses = useMemo(
     () => filterExpenses(expenses, query),
-    [expenses, query],
+    [expenses, query,],
   )
 
   const total = useMemo(
